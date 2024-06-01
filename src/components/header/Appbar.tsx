@@ -13,8 +13,9 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import Link from 'next/link';
 
-const pages = ['Home', 'Trips', 'Blog',"Login", "Register"];
+const pages = ['home', 'trips', 'blog',"login", "register"];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Navbar() {
@@ -114,8 +115,9 @@ function Navbar() {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', justifyContent:"center" } }}>
             {pages.map((page) => (
+             <Link href={page}>
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
@@ -123,6 +125,7 @@ function Navbar() {
               >
                 {page}
               </Button>
+             </Link>
             ))}
           </Box>
 

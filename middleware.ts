@@ -46,7 +46,7 @@ export function middleware(request: NextRequest) {
    }
 
    const role = decodedData?.role;
-
+   console.log(role)
    // if (role === 'ADMIN' && pathname.startsWith('/dashboard/admin')) {
    //    return NextResponse.next();
    // }
@@ -62,5 +62,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-   matcher: ['/login', '/register', '/dashboard/:page*', '/doctors/:page*'],
+   matcher: ['/login', '/register'],
 };

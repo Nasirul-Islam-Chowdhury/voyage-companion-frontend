@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import VCForm from "@/components/Forms/VCForm";
 import VCInput from "@/components/Forms/VCInput";
+import { userRegister } from "@/services/actions/userRegister";
 
 export const validationSchema = z.object({
   email: z.string().email("Please enter a valid email address!"),
@@ -23,8 +24,15 @@ const RegisterPage = () => {
   const [error, setError] = useState("");
 
   const handleLogin = async (values: FieldValues) => {
+
+
+    console.log(values)
+    if(values.password !== values.confirmPassword) {
+      return setError("Password did not matched");
+    }
+
     try {
-      const res = await userLogin(values);
+      const res = await userRegister(values);
       console.log(res);
       if (res?.data?.token) {
         toast.success(res?.message);

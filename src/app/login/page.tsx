@@ -99,6 +99,7 @@ const LoginPage = () => {
                      <Grid container spacing={2} my={1}>
                         <Grid item md={6}>
                            <VCInput
+                           
                               name='email'
                               label='Email'
                               type='email'
