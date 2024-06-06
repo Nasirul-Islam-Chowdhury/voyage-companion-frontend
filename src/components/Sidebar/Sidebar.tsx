@@ -36,18 +36,6 @@ const Sidebar = () => {
   );
   return (
     <Box>
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        gap={1}
-        pt={2}
-        pb={1}
-        px={2}
-        sx={{ cursor: "pointer", textDecoration: "none" }}
-      >
-      logo
-      </Stack>
       {drawer}
     </Box>
   );

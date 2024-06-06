@@ -33,13 +33,12 @@ const HomePage = () => {
   const travelPostsData = data?.slice(0, 6) as any;
 
   return (
-    <Container sx={{bgcolor:"background.paper"}}>
+    <Container >
       <Stack
         justifyContent={"center"}
         alignItems={"center"}
         gap={5}
         pb={15}
-        bgcolor={"ButtonShadow"}
       >
         <Typography
           fontSize={"2.5rem"}

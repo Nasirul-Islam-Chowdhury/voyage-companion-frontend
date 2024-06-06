@@ -9,48 +9,40 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
 
 export const drawerItems = (role: TUserRole): IDrawerItem[] => {
-    console.log(role)
+   const userRole = role.toLowerCase() ;
   const roleMenus: IDrawerItem[] = [];
-  switch (role) {
+  switch (userRole) {
     case USER_ROLE.ADMIN:
       roleMenus.push(
-        {
-          title: "Dashboard",
-          path: role,
-          icon: DashboardIcon,
-        },
+
         {
           title: "Manage Users",
-          path: `${role}/manage-users`,
+          path: `${userRole}/manage-users`,
           icon: PeopleAltIcon,
         }
       );
       break;
     case USER_ROLE.USER:
       roleMenus.push(
-        {
-          title: "Dashboard",
-          path: role,
-          icon: DashboardIcon,
-        },
+
         {
           title: "Post Trip",
-          path: `${role}/post-trip`,
+          path: `${userRole}/post-trip`,
           icon: PostAddIcon,
         },
         {
           title: "My Request",
-          path: `${role}/my-request`,
+          path: `${userRole}/my-request`,
           icon: SendTimeExtensionIcon,
         },
         {
           title: "Profile",
-          path: `${role}/profile`,
+          path: `${userRole}/profile`,
           icon: PersonIcon,
         },
         {
           title: "Password",
-          path: `${role}/password`,
+          path: `${userRole}/password`,
           icon: EnhancedEncryptionIcon,
         }
       );
@@ -59,6 +51,5 @@ export const drawerItems = (role: TUserRole): IDrawerItem[] => {
     default:
       break;
   }
-  console.log(roleMenus)
   return [...roleMenus];
 };
