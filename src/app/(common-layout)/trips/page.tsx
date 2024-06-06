@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-const HomePage = () => {
+const TripPage = () => {
   const query: Record<string, any> = {};
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedTerm = useDebounced({
@@ -35,42 +35,23 @@ const HomePage = () => {
         pb={15}
         bgcolor={"ButtonShadow"}
       >
-        <Typography
-          fontSize={"2.5rem"}
-          pt={10}
-          textAlign={"center"}
-          variant="h1"
-        >
-          Find Your Perfect Travel Buddy!
-        </Typography>
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <Button color="primary" variant="contained">
-            Share Your Trip
-          </Button>
-        </Box>
+
 
         <TextField
           onChange={(e) => setSearchTerm(e.target.value)}
           fullWidth
-          sx={{ width: "60%" }}
+          sx={{ width: "60%", mt:3 }}
+          
           placeholder="Search for trips"
         />
 
         <TravelPosts travelPosts={data} />
-        <Button color="primary" variant="contained">
-          See More
-        </Button>
+
       </Stack>
-      <Typography variant="h4">Health Tips</Typography>
-      <Typography variant="caption">
-        Note: Hover on cards to see details
-      </Typography>
-      <Box mb={10} mt={2}>
-        <TravelTipsGallery />
-        <FeaturedDestinations />
-      </Box>
+
+
     </Container>
   );
 };
 
-export default HomePage;
+export default TripPage;

@@ -19,14 +19,17 @@ const TravelCard = ({post}:{post:any}) => {
                   {post.destination}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {post.description}
+                  Start Dates: {post.startDate}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Travel Dates: {post.travelDates}
+                  Budget: ${post.budget}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                destination: {post.destination}
                 </Typography>
               </CardContent>
               <CardContent>
-                <Link href={post.detailsLink} passHref>
+                <Link href={`/trips/${post.id}`} passHref>
                   <Button size="small" color="primary">
                     View Details
                   </Button>

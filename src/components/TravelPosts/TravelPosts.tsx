@@ -3,11 +3,11 @@ import TravelCard from "../Cards/TravelCard";
 import { Container, Grid } from "@mui/material";
 import { travelPosts } from "@/data";
 
-const TravelPosts = () => {
+const TravelPosts = ({travelPosts}:{travelPosts:any}) => {
   return (
     <Container>
       <Grid container spacing={2}>
-        {travelPosts.slice(0, 10).map((post) => (
+        {travelPosts?.map((post:any) => (
           <TravelCard post={post} />
         ))}
       </Grid>

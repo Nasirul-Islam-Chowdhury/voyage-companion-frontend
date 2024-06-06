@@ -24,20 +24,28 @@ const RegisterPage = () => {
   const [error, setError] = useState("");
 
   const handleLogin = async (values: FieldValues) => {
-
-
-    console.log(values)
-    if(values.password !== values.confirmPassword) {
+    if (values.password !== values.confirmPassword) {
       return setError("Password did not matched");
     }
-
+    const { confirmPassword, ...userData } = values;
     try {
-      const res = await userRegister(values);
+      const res = await userRegister(userData);
       console.log(res);
-      if (res?.data?.token) {
-        toast.success(res?.message);
-        storeUserInfo({ accessToken: res?.data?.accessToken });
-        // router.push("/dashboard");
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+
+        const loginResponse = await userLogin({
+          email: values.email,
+          password: values.password,
+        });
+        console.log(loginResponse);
+        if (loginResponse?.data?.token) {
+          toast.success(loginResponse?.message);
+          storeUserInfo({ accessToken: loginResponse?.data?.accessToken });
+          // router.push("/dashboard");
+        } else {
+          setError(res.message);
+        }
       } else {
         setError(res.message);
       }
