@@ -4,6 +4,7 @@ import TravelPosts from "@/components/TravelPosts/TravelPosts";
 import TravelTipsGallery from "@/components/TravelPosts/TravelTipsGallery";
 import { useGetTripQuery } from "@/redux/api/tripApi";
 import { useDebounced } from "@/redux/hooks";
+
 import {
   Box,
   Button,
@@ -30,8 +31,9 @@ const HomePage = () => {
   }
   const { data, isLoading } = useGetTripQuery({ ...query });
   const travelPostsData = data?.slice(0, 6) as any;
+
   return (
-    <Container>
+    <Container sx={{bgcolor:"background.paper"}}>
       <Stack
         justifyContent={"center"}
         alignItems={"center"}

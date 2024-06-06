@@ -1,8 +1,10 @@
-import { decodedToken } from '@/app/utils/jwt';
+"use server"
+
 import { getFromLocalStorage, removeFromLocalStorage, setToLocalStorage } from '@/app/utils/local-storage';
 import { authKey } from '@/constants/authKey';
 import { instance as axiosInstance } from '@/helpers/axios/axioInstance';
-
+import { jwtDecode } from 'jwt-decode';
+import { cookies } from 'next/headers';
 
 
 
@@ -10,18 +12,25 @@ export const storeUserInfo = ({ accessToken }: { accessToken: string }) => {
    return setToLocalStorage(authKey, accessToken);
 };
 
-export const getUserInfo = () => {
-   const authToken = getFromLocalStorage(authKey);
-   if (authToken) {
-      const decodedData: any = decodedToken(authToken);
-      return {
-         ...decodedData,
-         role: decodedData?.role?.toLowerCase(),
-      };
-   } else {
-      return '';
+export async function getUserInfo() {
+   try {
+     const accessToken = cookies().get("accessToken")?.value;
+     if (accessToken) {
+       let decodedData = null;
+       decodedData = await jwtDecode(accessToken);
+       return {
+         email: decodedData.email,
+         role: decodedData.role,
+         id: decodedData.id,
+       };
+     }
+     {
+       return null;
+     }
+   } catch (error) {
+     throw error;
    }
-};
+ }
 
 export const isLoggedIn = () => {
    const authToken = getFromLocalStorage(authKey);
@@ -42,3 +51,15 @@ export const getNewAccessToken = async () => {
       withCredentials: true,
    });
 };
+
+
+export async function logOut() {
+   try {
+    cookies().delete("accessToken")
+    cookies().delete("refreshToken")
+    removeFromLocalStorage(authKey)
+   
+   } catch (error) {
+     throw error;
+   }
+ }

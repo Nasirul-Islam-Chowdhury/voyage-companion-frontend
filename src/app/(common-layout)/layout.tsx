@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 
  function CommonLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Box>
+    <Box sx={{backgroundColor:"background.paper"}}>
       <Navbar />
-     <Box sx={{minHeight:"80vh"}}>
+     <Box sx={{minHeight:"70vh"}}>
      {children}
      </Box>
       <Footer/>

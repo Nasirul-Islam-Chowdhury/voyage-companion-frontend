@@ -15,6 +15,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import Link from 'next/link';
 import PersonIcon from '@mui/icons-material/Person';
 import { useRouter } from 'next/navigation';
+import { logOut } from '@/services/auth.services';
 
 const pages = ['home', 'trips', 'blog', 'login', 'register'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -36,9 +37,9 @@ function Navbar() {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = (setting: string) => {
+  const handleCloseUserMenu = async(setting: string) => {
     if (setting === 'Logout') {
-      console.log('logout');
+    await  logOut()
     } else {
       router.push(`/${setting.toLowerCase()}`);
     }
