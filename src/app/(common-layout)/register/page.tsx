@@ -58,7 +58,7 @@ const RegisterPage = () => {
     <Container>
       <Stack
         sx={{
-          height: "100vh",
+          minHeight: "70vh",
           justifyContent: "center",
           alignItems: "center",
         }}

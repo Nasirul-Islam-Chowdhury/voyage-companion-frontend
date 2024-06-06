@@ -4,7 +4,7 @@ import { FieldValues } from "react-hook-form";
 import setAccessToken from "./setAccessToken";
 
 export const userLogin = async (data: FieldValues) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/login`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -15,8 +15,8 @@ export const userLogin = async (data: FieldValues) => {
   });
   const userInfo = await res.json();
 
-  if (userInfo.data.token) {
-    setAccessToken(userInfo.data.token, {
+  if (userInfo.data.accessToken) {
+    setAccessToken(userInfo.data.accessToken, {
       redirect: "/dashboard",
     });
   }

@@ -1,8 +1,7 @@
 'use client';
 import { Box, Button, Container, Grid, Stack, Typography } from '@mui/material';
-import Image from 'next/image';
 import Link from 'next/link';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { FieldValues } from 'react-hook-form';
 import { userLogin } from '@/services/actions/userLogin';
 import { storeUserInfo } from '@/services/auth.services';
 import { toast } from 'sonner';
@@ -11,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import VCForm from '@/components/Forms/VCForm';
 import VCInput from '@/components/Forms/VCInput';
+import { useRouter } from 'next/navigation';
 
 export const validationSchema = z.object({
    email: z.string().email('Please enter a valid email address!'),
@@ -19,16 +19,15 @@ export const validationSchema = z.object({
 
 const LoginPage = () => {
    const [error, setError] = useState('');
-
+      const router = useRouter();
    const handleLogin = async (values: FieldValues) => {
 
       try {
          const res = await userLogin(values);
-         console.log(res);
-         if (res?.data?.token) {
+         if (res?.data?.accessToken) {
             toast.success(res?.message);
+            router.push("/dashboard");
             storeUserInfo({ accessToken: res?.data?.accessToken });
-            // router.push("/dashboard");
          } else {
             setError(res.message);
             
@@ -42,7 +41,7 @@ const LoginPage = () => {
       <Container>
          <Stack
             sx={{
-               height: '100vh',
+               minHeight: "70vh",
                justifyContent: 'center',
                alignItems: 'center',
             }}

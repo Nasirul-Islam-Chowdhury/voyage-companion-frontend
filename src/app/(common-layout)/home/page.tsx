@@ -8,10 +8,13 @@ import {
   Box,
   Button,
   Container,
+  Grid,
+  Skeleton,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
+import Link from "next/link";
 import { useState } from "react";
 
 const HomePage = () => {
@@ -25,7 +28,8 @@ const HomePage = () => {
   if (!!debouncedTerm) {
     query["searchTerm"] = searchTerm;
   }
-  const { data } = useGetTripQuery({ ...query });
+  const { data, isLoading } = useGetTripQuery({ ...query });
+  const travelPostsData = data?.slice(0, 6) as any;
   return (
     <Container>
       <Stack
@@ -55,11 +59,28 @@ const HomePage = () => {
           sx={{ width: "60%" }}
           placeholder="Search for trips"
         />
-
-        <TravelPosts travelPosts={data} />
-        <Button color="primary" variant="contained">
-          See More
-        </Button>
+    {isLoading &&
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={4}>
+            {Array.from({ length: 6 }, (_, index) => (
+              <Grid item xs={12} sm={6} md={6} lg={4} key={index}>
+                <Box>
+                  <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+                  <Skeleton variant="circular" width={40} height={40} />
+                  <Skeleton variant="rectangular" width={210} height={60} />
+                  <Skeleton variant="rounded" width={210} height={60} />
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      }
+        <TravelPosts travelPosts={travelPostsData} />
+        <Link href={"/trips"}>
+          <Button color="primary" variant="contained">
+            See More
+          </Button>
+        </Link>
       </Stack>
       <Typography variant="h4">Health Tips</Typography>
       <Typography variant="caption">

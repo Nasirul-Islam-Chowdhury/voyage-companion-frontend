@@ -8,7 +8,7 @@ const TravelPosts = ({travelPosts}:{travelPosts:any}) => {
     <Container>
       <Grid container spacing={2}>
         {travelPosts?.map((post:any) => (
-          <TravelCard post={post} />
+          <TravelCard key={post?.id} post={post} />
         ))}
       </Grid>
     </Container>
