@@ -2,6 +2,7 @@
 import VCDatePicker from "@/components/Forms/VCDatePicker";
 import VCForm from "@/components/Forms/VCForm";
 import VCInput from "@/components/Forms/VCInput";
+import VCMultipleFileUploader from "@/components/Forms/VCMultipleFIleUploader";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import React from "react";
@@ -72,6 +73,12 @@ const CreateTrip = () => {
           </Grid>
           <Grid item xs={12}>
             <VCDatePicker label="End Date" name="endDate"/>
+          </Grid>
+          <Grid item xs={12}>
+          <VCMultipleFileUploader
+          name="photos"
+          label="Tourist Place Images"
+        />
           </Grid>
           <Grid item xs={12}>
             <Button

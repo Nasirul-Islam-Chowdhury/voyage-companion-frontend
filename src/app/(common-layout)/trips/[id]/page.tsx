@@ -63,8 +63,8 @@ function TravelDetailsPage() {
             Detailed Description
           </Typography>
           <Typography paragraph>
-            Discover the beauty of Bali with this 4-day trip that covers the best of the island's
-            beaches, culture, and attractions. You'll enjoy guided tours, comfortable
+            Discover the beauty of Bali with this 4-day trip that covers the best of the islands
+            beaches, culture, and attractions. Youll enjoy guided tours, comfortable
             accommodations, and free time to explore at your own pace.
           </Typography>
 

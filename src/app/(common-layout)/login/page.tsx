@@ -5,17 +5,15 @@ import { FieldValues } from "react-hook-form";
 import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
 import { toast } from "sonner";
-import { z } from "zod";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import VCForm from "@/components/Forms/VCForm";
 import VCInput from "@/components/Forms/VCInput";
 import { useRouter } from "next/navigation";
+import { loginValidationSchema } from "@/validationSchema/validationSchema";
 
-export const validationSchema = z.object({
-  email: z.string().email("Please enter a valid email address!"),
-  password: z.string().min(6, "Must be at least 6 characters"),
-});
+
 
 const LoginPage = () => {
   const [error, setError] = useState("");
@@ -23,7 +21,6 @@ const LoginPage = () => {
   const handleLogin = async (values: FieldValues) => {
     try {
       const res = await userLogin(values);
-      console.log(res);
       if (res?.data?.accessToken) {
         toast.success(res?.message);
         router.push("/dashboard");
@@ -87,7 +84,7 @@ const LoginPage = () => {
           <Box>
             <VCForm
               onSubmit={handleLogin}
-              resolver={zodResolver(validationSchema)}
+              resolver={zodResolver(loginValidationSchema)}
               defaultValues={{
                 email: "",
                 password: "",

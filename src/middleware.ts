@@ -44,7 +44,7 @@ export function middleware(request: NextRequest) {
    }
 
    const role = decodedData?.role;
-   console.log(role)
+
    if (role === 'ADMIN' && pathname.startsWith('/dashboard/admin')) {
       return NextResponse.next();
    }

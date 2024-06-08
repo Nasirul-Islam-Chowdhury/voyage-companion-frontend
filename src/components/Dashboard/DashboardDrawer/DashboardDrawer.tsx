@@ -19,9 +19,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Sidebar from "@/components/Sidebar/Sidebar";
-import { useGetMYProfileQuery } from "@/redux/api/myProfileApi";
+import { Menu, MenuItem, Tooltip } from "@mui/material";
+import { useRouter } from "next/navigation";
 
-
+import PersonIcon from "@mui/icons-material/Person";
 
 const drawerWidth = 240;
 
@@ -82,7 +83,7 @@ export default function DashboardDrawer({
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const {data: userInfo, isLoading, error} = useGetUserProfileQuery({})
-  console.log(userInfo,isLoading, error)
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -91,11 +92,35 @@ export default function DashboardDrawer({
     setOpen(false);
   };
 
+
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
+  const router = useRouter();
+
+
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+
+  const handleCloseUserMenu = async (setting: string) => {
+    if (setting === "Logout") {
+      await logOut();
+      router.push(`/login`);
+    } else {
+      router.push(`/${setting.toLowerCase()}`);
+    }
+    setAnchorElUser(null);
+  };
+
+  const settings = ["Profile", "Account", "Dashboard", "Logout"];
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
+        <Toolbar sx={{ display:"flex", justifyContent:"space-between"}}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -108,6 +133,50 @@ export default function DashboardDrawer({
           <Typography variant="h6" noWrap component="div">
            {detectGrettings()} {userInfo?.username}
           </Typography>
+
+
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <PersonIcon
+                  sx={{
+                    p: 0.1,
+                    border: 1,
+                    borderRadius: "100%",
+                    color: "white",
+                    width: 30,
+                    height: 30,
+                  }}
+                />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={() => setAnchorElUser(null)}
+            >
+              {settings.map((setting) => (
+                <MenuItem
+                  key={setting}
+                  onClick={() => handleCloseUserMenu(setting)}
+                >
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+
         </Toolbar>
       </AppBar>
       <Drawer

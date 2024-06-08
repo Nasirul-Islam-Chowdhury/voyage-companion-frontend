@@ -12,13 +12,9 @@ import { useState } from "react";
 import VCForm from "@/components/Forms/VCForm";
 import VCInput from "@/components/Forms/VCInput";
 import { userRegister } from "@/services/actions/userRegister";
+import { registerValidationSchema } from "@/validationSchema/validationSchema";
 
-export const validationSchema = z.object({
-  email: z.string().email("Please enter a valid email address!"),
-  password: z.string().min(6, "Must be at least 6 characters"),
-  confirmPassword: z.string(),
-  username: z.string(),
-});
+
 
 const RegisterPage = () => {
   const [error, setError] = useState("");
@@ -30,7 +26,6 @@ const RegisterPage = () => {
     const { confirmPassword, ...userData } = values;
     try {
       const res = await userRegister(userData);
-      console.log(res);
       if (res?.data?.success) {
         toast.success(res?.data?.message);
 
@@ -38,8 +33,8 @@ const RegisterPage = () => {
           email: values.email,
           password: values.password,
         });
-        console.log(loginResponse);
-        if (loginResponse?.data?.token) {
+
+        if (loginResponse?.data?.accessToken) {
           toast.success(loginResponse?.message);
           storeUserInfo({ accessToken: loginResponse?.data?.accessToken });
           // router.push("/dashboard");
@@ -105,7 +100,7 @@ const RegisterPage = () => {
           <Box>
             <VCForm
               onSubmit={handleLogin}
-              resolver={zodResolver(validationSchema)}
+              resolver={zodResolver(registerValidationSchema)}
               defaultValues={{
                 email: "",
                 username: "",

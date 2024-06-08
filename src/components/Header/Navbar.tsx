@@ -15,11 +15,12 @@ import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 import PersonIcon from "@mui/icons-material/Person";
 import { useRouter } from "next/navigation";
-import { logOut } from "@/services/auth.services";
+import { isLoggedIn, logOut } from "@/services/auth.services";
+import { useGetUserProfileQuery } from "@/redux/api/userApi";
 
-const pages = ["home", "trips", "blog", "login", "register"];
+const pages = ["home", "trips", "blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
+const unauthenticatedNavMenu = ["Login", "Register"];
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -43,6 +44,7 @@ function Navbar() {
 
   const handleCloseUserMenu = async (setting: string) => {
     if (setting === "Logout") {
+      console.log("logout");
       await logOut();
       router.push(`/login`);
     } else {
@@ -50,6 +52,11 @@ function Navbar() {
     }
     setAnchorElUser(null);
   };
+
+
+  const {data} = useGetUserProfileQuery(undefined);
+  console.log(data);
+
 
   return (
     <AppBar position="static">
@@ -60,7 +67,6 @@ function Navbar() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -71,7 +77,7 @@ function Navbar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            Voyage Companion
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -139,6 +145,16 @@ function Navbar() {
             }}
           >
             {pages.map((page, index) => (
+              <Link key={index} href={`/${page}`} passHref>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  {page}
+                </Button>
+              </Link>
+            ))}
+            {unauthenticatedNavMenu.map((page, index) => (
               <Link key={index} href={`/${page}`} passHref>
                 <Button
                   onClick={handleCloseNavMenu}
