@@ -1,4 +1,3 @@
-
 import { USER_ROLE } from "@/constants/role";
 import { IDrawerItem, TUserRole } from "@/types";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -9,23 +8,36 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
 
 export const drawerItems = (role: TUserRole): IDrawerItem[] => {
-
-   const userRole = role.toLowerCase() ;
+  const userRole = role?.toLowerCase();
+  console.log(role);
   const roleMenus: IDrawerItem[] = [];
   switch (userRole) {
     case USER_ROLE.ADMIN:
       roleMenus.push(
-
         {
-          title: "Manage Users",
-          path: `${userRole}/manage-users`,
-          icon: PeopleAltIcon,
-        }
-      );
+        title: "Manage Users",
+        path: `${userRole}/manage-users`,
+        icon: PeopleAltIcon,
+      },
+        {
+        title: "Manage Trips",
+        path: `${userRole}/manage-trips`,
+        icon: PeopleAltIcon,
+      },
+      {
+        title: "Profile",
+        path: `${userRole}/profile`,
+        icon: PersonIcon,
+      },
+      {
+        title: "Password",
+        path: `${userRole}/password`,
+        icon: EnhancedEncryptionIcon,
+      }
+    );
       break;
     case USER_ROLE.USER:
       roleMenus.push(
-
         {
           title: "Post Trip",
           path: `${userRole}/post-trip`,

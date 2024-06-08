@@ -9,6 +9,7 @@ import { cookies } from 'next/headers';
 
 
 export const storeUserInfo = ({ accessToken }: { accessToken: string }) => {
+
    return setToLocalStorage(authKey, accessToken);
 };
 

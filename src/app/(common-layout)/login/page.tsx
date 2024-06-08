@@ -12,6 +12,8 @@ import VCForm from "@/components/Forms/VCForm";
 import VCInput from "@/components/Forms/VCInput";
 import { useRouter } from "next/navigation";
 import { loginValidationSchema } from "@/validationSchema/validationSchema";
+import { setToLocalStorage } from "@/app/utils/local-storage";
+import { authKey } from "@/constants/authKey";
 
 
 
@@ -23,8 +25,7 @@ const LoginPage = () => {
       const res = await userLogin(values);
       if (res?.data?.accessToken) {
         toast.success(res?.message);
-        router.push("/dashboard");
-        storeUserInfo({ accessToken: res?.data?.accessToken });
+        setToLocalStorage(authKey, res?.data?.accessToken);
       } else {
         setError(res.message);
       }

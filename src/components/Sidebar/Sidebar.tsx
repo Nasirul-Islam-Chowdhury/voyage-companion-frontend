@@ -7,21 +7,15 @@ import { drawerItems } from "@/utils/drawerItems";
 import { Box, List, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import SidebarItems from "./SidebarItems";
+import { useGetUserProfileQuery } from "@/redux/api/userApi";
 
 
 const Sidebar = () => {
-  const [userRole, setUserRole] = useState("");
+  const  {data} = useGetUserProfileQuery(undefined);
+  console.log(data?.user?.role);
+  const userRole =  data?.user?.role;
 
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      const userInfo = await getUserInfo();
-      if (userInfo) {  
-        setUserRole(userInfo.role);
-      }
-    };
 
-    fetchUserInfo();
-  }, []);
   
 
 

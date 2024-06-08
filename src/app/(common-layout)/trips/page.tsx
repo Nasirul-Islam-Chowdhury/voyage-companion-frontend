@@ -3,6 +3,7 @@ import FeaturedDestinations from "@/components/TravelPosts/FeaturedDestinations"
 import TravelPosts from "@/components/TravelPosts/TravelPosts";
 import TravelTipsGallery from "@/components/TravelPosts/TravelTipsGallery";
 import { useGetTripQuery } from "@/redux/api/tripApi";
+import { useGetUserProfileQuery } from "@/redux/api/userApi";
 import { useDebounced } from "@/redux/hooks";
 import {
   Box,
@@ -26,6 +27,8 @@ const TripPage = () => {
     query["searchTerm"] = searchTerm;
   }
   const { data } = useGetTripQuery({ ...query });
+
+
   return (
     <Container>
       <Stack

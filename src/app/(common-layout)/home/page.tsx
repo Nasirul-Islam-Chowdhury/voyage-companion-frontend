@@ -3,6 +3,7 @@ import FeaturedDestinations from "@/components/TravelPosts/FeaturedDestinations"
 import TravelPosts from "@/components/TravelPosts/TravelPosts";
 import TravelTipsGallery from "@/components/TravelPosts/TravelTipsGallery";
 import { useGetTripQuery } from "@/redux/api/tripApi";
+import { useGetUserProfileQuery } from "@/redux/api/userApi";
 import { useDebounced } from "@/redux/hooks";
 
 import {
@@ -31,6 +32,7 @@ const HomePage = () => {
   }
   const { data, isLoading } = useGetTripQuery({ ...query });
   const travelPostsData = data?.slice(0, 6) as any;
+  const { data: profileInfo } = useGetUserProfileQuery(undefined);
 
   return (
     <Container >
@@ -49,9 +51,11 @@ const HomePage = () => {
           Find Your Perfect Travel Buddy!
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <Button color="primary" variant="contained">
+        <Link  href={`/dashboard/${profileInfo?.user?.role}/post-trip`}>
+        <Button  color="primary" variant="contained">
             Share Your Trip
           </Button>
+        </Link>
         </Box>
 
         <TextField

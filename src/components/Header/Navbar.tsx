@@ -15,12 +15,12 @@ import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 import PersonIcon from "@mui/icons-material/Person";
 import { useRouter } from "next/navigation";
-import { isLoggedIn, logOut } from "@/services/auth.services";
-import { useGetUserProfileQuery } from "@/redux/api/userApi";
+import {  logOut } from "@/services/auth.services";
+
 
 const pages = ["home", "trips", "blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
-const unauthenticatedNavMenu = ["Login", "Register"];
+const unauthenticatedNavMenu = ["login", "register"];
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -52,10 +52,6 @@ function Navbar() {
     }
     setAnchorElUser(null);
   };
-
-
-  const {data} = useGetUserProfileQuery(undefined);
-  console.log(data);
 
 
   return (

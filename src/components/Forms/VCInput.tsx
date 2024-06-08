@@ -11,7 +11,9 @@ type TInputProps = {
   placeholder?: string;
   required?: boolean;
   multiline?: boolean;
-  rows?:number
+  disabled?: boolean;
+  rows?: number;
+  defaultValue?: any;
 };
 
 const VCInput = ({
@@ -23,7 +25,9 @@ const VCInput = ({
   sx,
   required,
   multiline,
-  rows
+  rows,
+  defaultValue,
+  disabled,
 }: TInputProps) => {
   const { control } = useFormContext();
   return (
@@ -32,6 +36,7 @@ const VCInput = ({
       name={name}
       render={({ field, fieldState: { error } }) => (
         <TextField
+          disabled={disabled}
           {...field}
           sx={{ ...sx }}
           label={label}
@@ -45,6 +50,8 @@ const VCInput = ({
           helperText={error?.message}
           multiline={multiline}
           rows={rows}
+          defaultValue={defaultValue}
+          aria-readonly
         />
       )}
     />
