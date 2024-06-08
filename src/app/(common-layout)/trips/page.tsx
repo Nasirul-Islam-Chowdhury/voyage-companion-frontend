@@ -33,7 +33,6 @@ const TripPage = () => {
         alignItems={"center"}
         gap={5}
         pb={15}
-        bgcolor={"ButtonShadow"}
       >
 
 

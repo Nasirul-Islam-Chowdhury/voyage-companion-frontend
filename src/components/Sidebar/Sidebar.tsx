@@ -22,7 +22,7 @@ const Sidebar = () => {
 
     fetchUserInfo();
   }, []);
-
+  
 
 
   const drawer = (

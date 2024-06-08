@@ -13,9 +13,8 @@ const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/registe
     cache: "no-store",
   });
   const userInfo = await res.json();
-  console.log(userInfo);
-  if (userInfo.data.token) {
-    setAccessToken(userInfo.data.token, {
+  if (userInfo?.data?.accessToken) {
+    setAccessToken(userInfo?.data?.accessToken, {
       redirect: "/login",
     });
   }

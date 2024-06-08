@@ -12,6 +12,13 @@ const tripApi = baseApi.injectEndpoints({
         params: arg,
      }),
     }),
+    getSingleTrip: build.query({
+      query: (arg: Record<string, any>) => ({
+        url: `/trips/${arg?.id}`,
+        method: 'GET',
+        params: arg,
+     }),
+    }),
 
 
     postTrip: build.mutation({

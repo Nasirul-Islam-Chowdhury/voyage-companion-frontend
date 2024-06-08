@@ -1,5 +1,5 @@
 import Footer from "@/components/Footer";
-import Navbar from "@/components/header/Appbar";
+import Navbar from "@/components/Header/Navbar";
 
 import { Box } from "@mui/material";
 import type { Metadata } from "next";

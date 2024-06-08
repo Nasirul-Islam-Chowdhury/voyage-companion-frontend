@@ -10,6 +10,8 @@ type TInputProps = {
   sx?: SxProps;
   placeholder?: string;
   required?: boolean;
+  multiline?: boolean;
+  rows?:number
 };
 
 const VCInput = ({
@@ -20,6 +22,8 @@ const VCInput = ({
   fullWidth,
   sx,
   required,
+  multiline,
+  rows
 }: TInputProps) => {
   const { control } = useFormContext();
   return (
@@ -39,6 +43,8 @@ const VCInput = ({
           required={required}
           error={!!error?.message}
           helperText={error?.message}
+          multiline={multiline}
+          rows={rows}
         />
       )}
     />

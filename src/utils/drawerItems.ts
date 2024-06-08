@@ -9,6 +9,7 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
 
 export const drawerItems = (role: TUserRole): IDrawerItem[] => {
+  console.log(role)
    const userRole = role.toLowerCase() ;
   const roleMenus: IDrawerItem[] = [];
   switch (userRole) {
