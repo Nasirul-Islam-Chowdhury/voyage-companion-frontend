@@ -1,8 +1,8 @@
-
 import { getFromLocalStorage, setToLocalStorage } from '@/app/utils/local-storage';
 import { authKey } from '@/constants/authKey';
+
 import setAccessToken from '@/services/actions/setAccessToken';
-import { getNewAccessToken } from '@/services/auth.services';
+import { getFromCookie, getNewAccessToken } from '@/services/auth.services';
 import { IGenericErrorResponse, ResponseSuccessType } from '@/types';
 
 import axios from 'axios';
@@ -14,26 +14,23 @@ instance.defaults.timeout = 60000;
 
 // Add a request interceptor
 instance.interceptors.request.use(
-   function (config) {
-      // Do something before request is sent
-      const accessToken = getFromLocalStorage(authKey);
-    
-      if (accessToken) {
-         config.headers.Authorization = accessToken;
-      }
-      return config;
+   async (config) => {
+     const accessToken = getFromLocalStorage(authKey);
+
+     if (accessToken) {
+       config.headers.authorization = accessToken
+     }
+     return config;
    },
-   function (error) {
-      // Do something with request error
-      return Promise.reject(error);
-   }
-);
+   (error) => Promise.reject(error)
+ );
 
 // Add a response interceptor
 instance.interceptors.response.use(
    //@ts-ignore
    function (response) {
-
+      // Any status code that lie within the range of 2xx cause this function to trigger
+      // Do something with response data
       const responseObject: ResponseSuccessType = {
          data: response?.data?.data,
          meta: response?.data?.meta,
@@ -43,11 +40,11 @@ instance.interceptors.response.use(
    async function (error) {
 
       const config = error.config;
-      // console.log(config);
+
       if (error?.response?.status === 500 && !config.sent) {
          config.sent = true;
-         const response = await getNewAccessToken();
-         const accessToken = response?.data?.accessToken;
+         const response =  await getNewAccessToken();
+         const accessToken = response?.data?.accessToken as string;
          config.headers['Authorization'] = accessToken;
          setToLocalStorage(authKey, accessToken);
          setAccessToken(accessToken);

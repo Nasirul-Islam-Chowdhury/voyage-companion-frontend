@@ -3,7 +3,15 @@ import {
   useDeleteSingleTripMutation,
   useGetTripQuery,
 } from "@/redux/api/tripApi";
-import { Box, Button, IconButton, Stack, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -11,11 +19,16 @@ import { useDebounced } from "@/redux/hooks";
 import { toast } from "sonner";
 import EditIcon from "@mui/icons-material/Edit";
 import Link from "next/link";
+import {
+  useChangeUserStatusMutation,
+  useGetAllUsersQuery,
+} from "@/redux/api/userApi";
+import { useDeleteRequestMutation, useGetMyTripRequestQuery } from "@/redux/api/tripRequestApi";
 
-const ManageTrips = () => {
+const MyTripRequests = () => {
   const query: Record<string, any> = {};
   const [searchTerm, setSearchTerm] = useState<string>("");
-  // console.log(searchTerm);
+
 
   const debouncedTerm = useDebounced({
     searchQuery: searchTerm,
@@ -26,12 +39,13 @@ const ManageTrips = () => {
     query["searchTerm"] = searchTerm;
   }
 
-  const { data, isLoading } = useGetTripQuery({ ...query });
-  const [deleteSingleTrip] = useDeleteSingleTripMutation();
+  const [deleteRequest] = useDeleteRequestMutation();
+  const { data, isLoading } = useGetMyTripRequestQuery({});
 
   const handleDelete = async (id: string) => {
+
     try {
-      const res = await deleteSingleTrip(id).unwrap();
+      const res = await deleteRequest(id).unwrap();
 
       if (res?.id) {
         toast.success("Trip deleted successfully!!!");
@@ -42,11 +56,34 @@ const ManageTrips = () => {
   };
 
   const columns: GridColDef[] = [
-    { field: "destination", headerName: "Name", flex: 1 },
-    { field: "startDate", headerName: "Start Date", flex: 1 },
-    { field: "endDate", headerName: "End Date", flex: 1 },
-    { field: "travelType", headerName: "Type", flex: 1 },
-    { field: "budget", headerName: "Budget", flex: 1 },
+    {
+      field: "destination",
+      headerName: "Destination",
+      flex: 1,
+
+      renderCell: ({ row }) => {
+        return (
+          <Box>
+            <Typography>{row?.trip?.destination}</Typography>
+          </Box>
+        );
+      },
+    },
+    {
+      field: "startDate",
+      headerName: "Start Date",
+      flex: 1,
+
+      renderCell: ({ row }) => {
+        return (
+          <Box>
+            <Typography>{row?.trip?.startDate}</Typography>
+          </Box>
+        );
+      },
+    },
+    { field: "status", headerName: "Status", flex: 1 },
+
     {
       field: "action",
       headerName: "Action",
@@ -62,11 +99,11 @@ const ManageTrips = () => {
             >
               <DeleteIcon sx={{ color: "red" }} />
             </IconButton>
-            <Link href={`/dashboard/admin/trips/edit/${row.id}`}>
+            {/* <Link href={`/dashboard/admin/trips/edit/${row.id}`}>
               <IconButton aria-label="delete">
                 <EditIcon />
               </IconButton>
-            </Link>
+            </Link> */}
           </Box>
         );
       },
@@ -79,18 +116,29 @@ const ManageTrips = () => {
         <TextField
           onChange={(e) => setSearchTerm(e.target.value)}
           size="small"
-          placeholder="search doctors"
+          placeholder="search requests"
         />
       </Stack>
       {!isLoading ? (
-        <Box my={2}>
-          <DataGrid rows={data} columns={columns} />
+        <Box my={2} sx={{ maxWidth: "95%" }}>
+          {data && (
+            <DataGrid rows={data} columns={columns} hideFooterPagination />
+          )}
         </Box>
       ) : (
-        <h1>Loading.....</h1>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "70vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
       )}
     </Box>
   );
 };
 
-export default ManageTrips;
+export default MyTripRequests;

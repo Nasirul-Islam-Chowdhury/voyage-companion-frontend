@@ -8,30 +8,30 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
 
 export const drawerItems = (role: TUserRole): IDrawerItem[] => {
-  const userRole = role?.toLowerCase();
   console.log(role);
+  const senitizedRole = role?.toLowerCase();
   const roleMenus: IDrawerItem[] = [];
-  switch (userRole) {
+  switch (role) {
     case USER_ROLE.ADMIN:
       roleMenus.push(
         {
         title: "Manage Users",
-        path: `${userRole}/manage-users`,
+        path: `${senitizedRole}/manage-users`,
         icon: PeopleAltIcon,
       },
         {
         title: "Manage Trips",
-        path: `${userRole}/manage-trips`,
+        path: `${senitizedRole}/manage-trips`,
         icon: PeopleAltIcon,
       },
       {
         title: "Profile",
-        path: `${userRole}/profile`,
+        path: `${senitizedRole}/profile`,
         icon: PersonIcon,
       },
       {
         title: "Password",
-        path: `${userRole}/password`,
+        path: `${senitizedRole}/password`,
         icon: EnhancedEncryptionIcon,
       }
     );
@@ -40,24 +40,35 @@ export const drawerItems = (role: TUserRole): IDrawerItem[] => {
       roleMenus.push(
         {
           title: "Post Trip",
-          path: `${userRole}/post-trip`,
+          path: `${senitizedRole}/post-trip`,
           icon: PostAddIcon,
         },
         {
-          title: "My Request",
-          path: `${userRole}/my-request`,
+          title: "Sent Requests",
+          path: `${senitizedRole}/my-request`,
           icon: SendTimeExtensionIcon,
         },
         {
           title: "Profile",
-          path: `${userRole}/profile`,
+          path: `${senitizedRole}/profile`,
           icon: PersonIcon,
+        },
+       
+        {
+          title: "My Trips",
+          path: `${senitizedRole}/my-trips`,
+          icon: EnhancedEncryptionIcon,
+        },
+        {
+          title: "Trip Requests",
+          path: `${senitizedRole}/trip-requests`,
+          icon: EnhancedEncryptionIcon,
         },
         {
           title: "Password",
-          path: `${userRole}/password`,
+          path: `${senitizedRole}/password`,
           icon: EnhancedEncryptionIcon,
-        }
+        },
       );
       break;
 

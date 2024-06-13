@@ -1,9 +1,10 @@
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { SxProps } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
+import { dateFormatter } from "@/utils/dateFormatter";
 
 interface IDatePicker {
   name: string;
@@ -27,7 +28,7 @@ const VCDatePicker = ({
     <Controller
       name={name}
       control={control}
-      defaultValue={dayjs(new Date().toDateString())}
+      defaultValue={dayjs().format("YYYY-MM-DD")}
       render={({ field: { onChange, value, ...field } }) => {
         return (
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -36,8 +37,9 @@ const VCDatePicker = ({
               timezone="system"
               disablePast
               {...field}
+            
               onChange={(date) => onChange(date)}
-              value={value || Date.now()}
+              value={value ? dayjs(value) : null}
               slotProps={{
                 textField: {
                   required: required,

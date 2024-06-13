@@ -1,29 +1,45 @@
 "use client";
 import VCForm from "@/components/Forms/VCForm";
 import VCInput from "@/components/Forms/VCInput";
-import { useGetUserProfileQuery } from "@/redux/api/userApi";
+import Loading from "@/loading";
+import {
+  useGetUserProfileQuery,
+  useUpdateUserProfileMutation,
+} from "@/redux/api/userApi";
+import { getUserInfo } from "@/services/auth.services";
+import { profileValidationSchema } from "@/validationSchema/validationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Box, Button, Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const ProfilePage = () => {
-  const { data: profileInfo } = useGetUserProfileQuery(undefined);
-  const profileValidationSchema = z.object({
-    username: z.string({required_error:"username is required"}).optional(),
-    email: z.string({required_error:"email is required"}).optional(),
-    profile: z.object({
-      bio: z.string({required_error:"bio is required"}).optional(),
-      contactNumber: z.string({required_error:"contact number is required"}).optional(),
-      age: z.number({required_error:"age  is required"}).optional(),
+  const { data: profileInfo, isLoading } = useGetUserProfileQuery(undefined);
+  const [updateUserProfile] = useUpdateUserProfileMutation();
 
-    })
-  })
-  const handleSubmit = (data: FieldValues) => {
-    data.email  = profileInfo?.user?.email;
-    console.log("Profile Info:", data);
+  if (isLoading) {
+    return <Loading />;
+  }
+
+
+
+  const handleSubmit = async (data: FieldValues) => {
+
+    try {
+      data.email = profileInfo?.user?.email;
+      data.username = data?.username;
+      data.profile.age = Number(data.profile.age);
+
+      const res = await updateUserProfile(data);
+      if (res.data) {
+        toast.success("Profile updated successfully");
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -51,7 +67,7 @@ const ProfilePage = () => {
             profile: {
               bio: profileInfo?.bio,
               age: profileInfo?.age,
-              contactNumber: profileInfo?.contactNumber
+              contactNumber: profileInfo?.contactNumber,
             },
           }}
         >
@@ -97,7 +113,7 @@ const ProfilePage = () => {
               <label>Contact Number</label>
               <VCInput
                 name="profile.contactNumber"
-                type="text"
+                type="number"
                 fullWidth
                 defaultValue={profileInfo?.contactNumber}
               />

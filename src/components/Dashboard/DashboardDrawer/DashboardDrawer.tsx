@@ -1,8 +1,6 @@
 "use client";
 
-
 import { useGetUserProfileQuery } from "@/redux/api/userApi";
-import { logOut } from "@/services/auth.services";
 import detectGrettings from "@/utils/detectGrettings";
 import * as React from "react";
 import { styled, useTheme } from "@mui/material/styles";
@@ -11,7 +9,6 @@ import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
@@ -23,6 +20,8 @@ import { Menu, MenuItem, Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 import PersonIcon from "@mui/icons-material/Person";
+import { logoutUser } from "@/services/logoutUser";
+import Link from "next/link";
 
 const drawerWidth = 240;
 
@@ -82,7 +81,7 @@ export default function DashboardDrawer({
 }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
-  const {data: userInfo, isLoading, error} = useGetUserProfileQuery({})
+  const { data: userInfo, isLoading, error } = useGetUserProfileQuery({});
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -92,35 +91,33 @@ export default function DashboardDrawer({
     setOpen(false);
   };
 
-
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
   const router = useRouter();
 
-
-
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
-
   const handleCloseUserMenu = async (setting: string) => {
     if (setting === "Logout") {
-      await logOut();
+      logoutUser(router);
       router.push(`/login`);
+    } else if (setting === "Dashboard") {
+      router.push(`/dashboard`);
     } else {
-      router.push(`/${setting.toLowerCase()}`);
+      router.push(`/dashboard/role/${setting.toLowerCase()}`);
     }
     setAnchorElUser(null);
   };
 
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+  const settings = ["Profile", "Logout"];
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar sx={{ display:"flex", justifyContent:"space-between"}}>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -131,9 +128,8 @@ export default function DashboardDrawer({
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-           {detectGrettings()} {userInfo?.username}
+            {detectGrettings()} {userInfo?.username}
           </Typography>
-
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
@@ -176,7 +172,6 @@ export default function DashboardDrawer({
               ))}
             </Menu>
           </Box>
-
         </Toolbar>
       </AppBar>
       <Drawer
@@ -192,7 +187,15 @@ export default function DashboardDrawer({
         anchor="left"
         open={open}
       >
-        <DrawerHeader>
+        <DrawerHeader className="w-full">
+        
+            <Link className="font-bold text-2xl text-center mr-5" href={"/"}>
+            Voyage
+            </Link>
+       
+
+
+
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon />

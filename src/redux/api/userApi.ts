@@ -1,3 +1,4 @@
+import { tagTypes } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
 const userApi = baseApi.injectEndpoints({
@@ -7,6 +8,7 @@ const userApi = baseApi.injectEndpoints({
       query: () => ({
         url: "/profile",
       }),
+      providesTags: [tagTypes.user, tagTypes.profile]
     }),
 
     getAllUsers: build.query({
@@ -14,6 +16,7 @@ const userApi = baseApi.injectEndpoints({
         url: "/user",
         params: args
       }),
+      providesTags: [tagTypes.user]
     }),
 
     changeUserStatus: build.mutation({
@@ -22,6 +25,16 @@ const userApi = baseApi.injectEndpoints({
         method: "PATCH",
         params: args.data
       }),
+      invalidatesTags: [tagTypes.user]
+    }),
+
+    changePassword: build.mutation({
+      query: (data) => ({
+        url: `/auth/change-password`,
+        method: "PATCH",
+        data: data
+      }),
+      invalidatesTags: [tagTypes.user]
     }),
 
 
@@ -32,6 +45,7 @@ const userApi = baseApi.injectEndpoints({
         method: "PATCH",
         data: data
       }),
+      invalidatesTags: [tagTypes.profile, tagTypes.user]
     }),
 
 
@@ -40,4 +54,4 @@ const userApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetUserProfileQuery, useUpdateUserProfileMutation, useGetAllUsersQuery, useChangeUserStatusMutation } = userApi;
+export const { useGetUserProfileQuery, useUpdateUserProfileMutation, useGetAllUsersQuery, useChangeUserStatusMutation, useChangePasswordMutation } = userApi;

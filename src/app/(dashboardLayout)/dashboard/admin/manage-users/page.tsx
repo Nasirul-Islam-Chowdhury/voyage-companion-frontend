@@ -3,7 +3,7 @@ import {
   useDeleteSingleTripMutation,
   useGetTripQuery,
 } from "@/redux/api/tripApi";
-import { Box, Button, IconButton, Stack, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, IconButton, Stack, TextField } from "@mui/material";
 import { useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -16,7 +16,7 @@ import { useChangeUserStatusMutation, useGetAllUsersQuery } from "@/redux/api/us
 const ManageUsers = () => {
   const query: Record<string, any> = {};
   const [searchTerm, setSearchTerm] = useState<string>("");
-  // console.log(searchTerm);
+
 
   const debouncedTerm = useDebounced({
     searchQuery: searchTerm,
@@ -29,7 +29,7 @@ const ManageUsers = () => {
 
   const { data, isLoading } = useGetAllUsersQuery({ ...query });
   const [changeStatus] = useChangeUserStatusMutation();
-  console.log(data);
+
   const handleDelete = async (id: string, status: string) => {
     const args = {
       data:{status},
@@ -46,14 +46,7 @@ const ManageUsers = () => {
     }
   };
 
-  // {
-  //   id: '67e8de2e-4d7a-4d46-8317-0321dcb12592',
-  //   email: 'n@gmail.com',
-  //   role: 'USER',
-  //   status: 'ACTIVE',
-  //   createdAt: '2024-06-07T16:04:55.841Z',
-  //   updatedAt: '2024-06-07T16:04:55.841Z'
-  // },
+
 
 
   const columns: GridColDef[] = [
@@ -76,11 +69,11 @@ const ManageUsers = () => {
             >
               <DeleteIcon sx={{ color: "red" }} />
             </IconButton>
-            <Link href={`/dashboard/admin/trips/edit/${row.id}`}>
+            {/* <Link href={`/dashboard/admin/trips/edit/${row.id}`}>
               <IconButton aria-label="delete">
                 <EditIcon />
               </IconButton>
-            </Link>
+            </Link> */}
           </Box>
         );
       },
@@ -93,15 +86,24 @@ const ManageUsers = () => {
         <TextField
           onChange={(e) => setSearchTerm(e.target.value)}
           size="small"
-          placeholder="search doctors"
+          placeholder="search users"
         />
       </Stack>
       {!isLoading ? (
-        <Box my={2}>
+        <Box my={2} sx={{maxWidth:"95%"}}>
           <DataGrid rows={data} columns={columns} />
         </Box>
       ) : (
-        <h1>Loading.....</h1>
+        <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "70vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
       )}
     </Box>
   );

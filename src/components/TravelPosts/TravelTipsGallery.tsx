@@ -8,19 +8,19 @@ const tipsData = [
     id: 1,
     title: 'Pack Light',
     description: 'Always pack light to make your travel experience more enjoyable and hassle-free. Carry only essentials and versatile clothing items.',
-    image: 'https://source.unsplash.com/featured/?travel,pack'
+    image: 'https://unsplash.com/photos/foggy-mountain-summit-1Z2niiBPg5A'
   },
   {
     id: 2,
     title: 'Stay Hydrated',
     description: 'Keep yourself hydrated, especially during long flights or hot weather. Carry a reusable water bottle.',
-    image: 'https://source.unsplash.com/featured/?travel,water'
+    image: 'https://unsplash.com/photos/foggy-mountain-summit-1Z2niiBPg5A'
   },
   {
     id: 3,
     title: 'Learn Basic Phrases',
     description: 'Learn a few basic phrases of the local language to make your travel smoother and show respect to the locals.',
-    image: 'https://source.unsplash.com/featured/?travel,language'
+    image: 'https://unsplash.com/photos/foggy-mountain-summit-1Z2niiBPg5A'
   },
   // Add more tips as needed
 ];
@@ -49,7 +49,7 @@ const Overlay = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  opacity: 0,
+  opacity: 1,
   transition: 'opacity 0.3s ease-in-out',
   padding: theme.spacing(2),
   textAlign: 'center',
@@ -57,8 +57,8 @@ const Overlay = styled(Box)(({ theme }) => ({
 
 const TravelTipsGallery = () => {
   return (
-    <Grid container spacing={2}>
-      {tipsData.map(tip => (
+    <Grid container spacing={2} px={2}>
+      {tipsData?.map(tip => (
         <Grid item xs={12} sm={6} md={4} key={tip.id}>
           <TipBox style={{ backgroundImage: `url(${tip.image})` }}>
             <Overlay className="overlay">

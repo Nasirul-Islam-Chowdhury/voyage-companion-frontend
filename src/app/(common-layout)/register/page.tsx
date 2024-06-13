@@ -6,41 +6,28 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
 import { toast } from "sonner";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import VCForm from "@/components/Forms/VCForm";
 import VCInput from "@/components/Forms/VCInput";
 import { userRegister } from "@/services/actions/userRegister";
 import { registerValidationSchema } from "@/validationSchema/validationSchema";
-
-
+import { useRouter } from "next/navigation";
 
 const RegisterPage = () => {
   const [error, setError] = useState("");
-
-  const handleLogin = async (values: FieldValues) => {
+  const router = useRouter();
+  const handleRegister = async (values: FieldValues) => {
     if (values.password !== values.confirmPassword) {
       return setError("Password did not matched");
     }
     const { confirmPassword, ...userData } = values;
     try {
       const res = await userRegister(userData);
-      if (res?.data?.success) {
-        toast.success(res?.data?.message);
-
-        const loginResponse = await userLogin({
-          email: values.email,
-          password: values.password,
-        });
-
-        if (loginResponse?.data?.accessToken) {
-          toast.success(loginResponse?.message);
-          storeUserInfo({ accessToken: loginResponse?.data?.accessToken });
-          // router.push("/dashboard");
-        } else {
-          setError(res.message);
-        }
+      if (res?.success) {
+        toast.success(res?.message);
+        router.push("/login")
+       
       } else {
         setError(res.message);
       }
@@ -99,7 +86,7 @@ const RegisterPage = () => {
 
           <Box>
             <VCForm
-              onSubmit={handleLogin}
+              onSubmit={handleRegister}
               resolver={zodResolver(registerValidationSchema)}
               defaultValues={{
                 email: "",
@@ -143,20 +130,7 @@ const RegisterPage = () => {
                 </Grid>
               </Grid>
 
-              <Link href={"/forgot-password"}>
-                <Typography
-                  mb={1}
-                  textAlign="end"
-                  component="p"
-                  fontWeight={300}
-                  sx={{
-                    textDecoration: "underline",
-                  }}
-                >
-                  Forgot Password?
-                </Typography>
-              </Link>
-
+              
               <Button
                 variant="contained"
                 sx={{
@@ -168,8 +142,8 @@ const RegisterPage = () => {
                 Register
               </Button>
               <Typography component="p" fontWeight={300}>
-                Don&apos;t have an account?{" "}
-                <Link href="/register">Create an account</Link>
+                Already have an account?{" "}
+                <Link href="/login">Login</Link>
               </Typography>
             </VCForm>
           </Box>

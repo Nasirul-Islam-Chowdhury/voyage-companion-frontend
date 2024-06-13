@@ -1,5 +1,6 @@
 export enum tagTypes {
     user = "user",
+    profile = "profile",
     trip = "trip",
     tripRequest = "tripRequest",
   }
@@ -8,4 +9,5 @@ export enum tagTypes {
     tagTypes.trip,
     tagTypes.user,
     tagTypes.tripRequest,
+    tagTypes.profile,
   ];

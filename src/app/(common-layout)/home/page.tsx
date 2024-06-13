@@ -91,7 +91,7 @@ const HomePage = () => {
       <Typography variant="caption">
         Note: Hover on cards to see details
       </Typography>
-      <Box mb={10} mt={2}>
+      <Box mb={10} mt={2} >
         <TravelTipsGallery />
         <FeaturedDestinations />
       </Box>

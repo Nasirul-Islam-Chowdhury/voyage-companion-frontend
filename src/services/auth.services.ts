@@ -45,8 +45,9 @@ export const removeUser = () => {
 };
 
 export const getNewAccessToken = async () => {
+
    return await axiosInstance({
-      url: 'http://localhost:5000/api/v1/auth/refresh-token',
+      url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/refresh-token`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true,
@@ -58,9 +59,14 @@ export async function logOut() {
    try {
     cookies().delete("accessToken")
     cookies().delete("refreshToken")
-    removeFromLocalStorage(authKey)
+    removeUser()
    
    } catch (error) {
      throw error;
    }
+ }
+
+ export  const getFromCookie = async(key:string) => {
+  const data = cookies().get(key)?.value;
+  return data
  }

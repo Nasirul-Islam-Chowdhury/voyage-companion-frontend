@@ -15,13 +15,17 @@ import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 import PersonIcon from "@mui/icons-material/Person";
 import { useRouter } from "next/navigation";
-import {  logOut } from "@/services/auth.services";
-
+import { logoutUser } from "@/services/logoutUser";
+import { getUserInfo } from "@/services/auth.services";
+import { useGetUserProfileQuery } from "@/redux/api/userApi";
 
 const pages = ["home", "trips", "blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "Dashboard", "Logout"];
 const unauthenticatedNavMenu = ["login", "register"];
 function Navbar() {
+
+  const {data: userProfile} = useGetUserProfileQuery(undefined);
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -44,11 +48,12 @@ function Navbar() {
 
   const handleCloseUserMenu = async (setting: string) => {
     if (setting === "Logout") {
-      console.log("logout");
-      await logOut();
+      logoutUser(router);
       router.push(`/login`);
+    } else if (setting === "Dashboard") {
+      router.push(`/dashboard`);
     } else {
-      router.push(`/${setting.toLowerCase()}`);
+      router.push(`/dashboard/${userProfile?.user?.role?.toLowerCase()}/${setting.toLowerCase()}`);
     }
     setAnchorElUser(null);
   };
@@ -62,7 +67,8 @@ function Navbar() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
+            href={'/'}
+            component={Link}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -73,7 +79,7 @@ function Navbar() {
               textDecoration: "none",
             }}
           >
-            Voyage Companion
+            Voyage
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -118,8 +124,9 @@ function Navbar() {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+            
+            component={Link}
+            href="/"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -131,7 +138,9 @@ function Navbar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+   
+            Voyage
+
           </Typography>
           <Box
             sx={{
@@ -150,16 +159,17 @@ function Navbar() {
                 </Button>
               </Link>
             ))}
-            {unauthenticatedNavMenu.map((page, index) => (
-              <Link key={index} href={`/${page}`} passHref>
-                <Button
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page}
-                </Button>
-              </Link>
-            ))}
+            {!userProfile?.user &&
+              unauthenticatedNavMenu.map((page, index) => (
+                <Link key={index} href={`/${page}`} passHref>
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {page}
+                  </Button>
+                </Link>
+              ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

@@ -9,11 +9,11 @@ const AuthRoutes = ['/login', '/register'];
 const commonPrivateRoutes = [
    '/dashboard',
    '/dashboard/change-password',
-   '/doctors',
 ];
 const roleBasedPrivateRoutes = {
-   USER: [/^\/dashboard\/user/],
+
    ADMIN: [/^\/dashboard\/admin/],
+   USER: [/^\/dashboard\/user/],
 
 };
 
@@ -21,6 +21,7 @@ export function middleware(request: NextRequest) {
    const { pathname } = request.nextUrl;
 
    const accessToken = cookies().get('accessToken')?.value;
+
    if (!accessToken) {
       if (AuthRoutes.includes(pathname)) {
          return NextResponse.next();
@@ -45,9 +46,7 @@ export function middleware(request: NextRequest) {
 
    const role = decodedData?.role;
 
-   if (role === 'ADMIN' && pathname.startsWith('/dashboard/admin')) {
-      return NextResponse.next();
-   }
+
 
    if (role && roleBasedPrivateRoutes[role as Role]) {
       const routes = roleBasedPrivateRoutes[role as Role];
@@ -60,5 +59,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-   matcher: ['/login', '/register', '/dashboard/:page*'],
+   matcher: ['/login', '/register', '/dashboard/:page*', ],
 };

@@ -1,31 +1,33 @@
 "use client";
+
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { FieldValues } from "react-hook-form";
 import { userLogin } from "@/services/actions/userLogin";
-import { storeUserInfo } from "@/services/auth.services";
 import { toast } from "sonner";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import VCForm from "@/components/Forms/VCForm";
 import VCInput from "@/components/Forms/VCInput";
-import { useRouter } from "next/navigation";
 import { loginValidationSchema } from "@/validationSchema/validationSchema";
 import { setToLocalStorage } from "@/app/utils/local-storage";
 import { authKey } from "@/constants/authKey";
+import { useRouter } from "next/navigation";
+
 
 
 
 const LoginPage = () => {
-  const [error, setError] = useState("");
   const router = useRouter();
+  const [error, setError] = useState("");
+
   const handleLogin = async (values: FieldValues) => {
     try {
       const res = await userLogin(values);
       if (res?.data?.accessToken) {
         toast.success(res?.message);
         setToLocalStorage(authKey, res?.data?.accessToken);
+        router.push("/dashboard");
       } else {
         setError(res.message);
       }
@@ -110,20 +112,7 @@ const LoginPage = () => {
                 </Grid>
               </Grid>
 
-              <Link href={"/forgot-password"}>
-                <Typography
-                  mb={1}
-                  textAlign="end"
-                  component="p"
-                  fontWeight={300}
-                  sx={{
-                    textDecoration: "underline",
-                  }}
-                >
-                  Forgot Password?
-                </Typography>
-              </Link>
-
+             
               <Button
                 variant="contained"
                 sx={{
